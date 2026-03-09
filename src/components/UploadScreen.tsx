@@ -54,13 +54,13 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent mb-2">
           <Music className="w-7 h-7 text-accent-foreground" />
         </div>
-        <h1 className="text-2xl font-bold tracking-tight">AI 쇼츠 자동 제작</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-white">AI 쇼츠 자동 제작</h1>
         <p className="text-sm text-muted-foreground">유튜브 영상을 분석하여 쇼츠를 자동으로 만들어 드립니다</p>
       </div>
 
       {/* YouTube URL */}
       <div className="space-y-2">
-        <label className="text-sm font-medium flex items-center gap-1.5">
+        <label className="text-sm font-medium flex items-center gap-1.5 text-foreground">
           <Link className="w-4 h-4 text-muted-foreground" />
           유튜브 URL
         </label>
@@ -69,7 +69,7 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
             placeholder="https://youtube.com/watch?v=..."
             value={url}
             onChange={(e) => setUrl(e.target.value)}
-            className="flex-1 h-11 bg-surface border-border"
+            className="flex-1 h-11 bg-input border-border text-white placeholder:text-muted-foreground"
           />
         </div>
       </div>
@@ -88,7 +88,7 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
         onDrop={handleDrop}
         className={`
           relative border-2 border-dashed rounded-xl p-8 text-center transition-all cursor-pointer
-          ${isDragging ? "border-primary bg-accent" : "border-border bg-surface hover:border-primary/40"}
+          ${isDragging ? "border-primary bg-accent" : "border-border bg-input hover:border-primary/40"}
           ${fileName ? "border-success bg-success/5" : ""}
         `}
       >
@@ -100,10 +100,10 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
         />
         <Upload className={`w-8 h-8 mx-auto mb-2 ${fileName ? "text-success" : "text-muted-foreground"}`} />
         {fileName ? (
-          <p className="text-sm font-medium">{fileName}</p>
+          <p className="text-sm font-medium text-white">{fileName}</p>
         ) : (
           <>
-            <p className="text-sm font-medium">파일을 드래그하거나 클릭하여 업로드</p>
+            <p className="text-sm font-medium text-foreground">파일을 드래그하거나 클릭하여 업로드</p>
             <p className="text-xs text-muted-foreground mt-1">MP4, MP3, WAV 지원</p>
           </>
         )}
@@ -111,7 +111,7 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
 
       {/* Song Info */}
       <div className="space-y-3">
-        <h3 className="text-sm font-semibold">곡 정보</h3>
+        <h3 className="text-sm font-semibold text-foreground">곡 정보</h3>
         <div className="space-y-2.5">
           <div className="relative">
             <Music className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -119,7 +119,7 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
               placeholder="곡 제목"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="pl-10 h-11 bg-surface"
+              className="pl-10 h-11 bg-input border-border text-white placeholder:text-muted-foreground"
             />
           </div>
           <div className="relative">
@@ -128,7 +128,7 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
               placeholder="아티스트명"
               value={artist}
               onChange={(e) => setArtist(e.target.value)}
-              className="pl-10 h-11 bg-surface"
+              className="pl-10 h-11 bg-input border-border text-white placeholder:text-muted-foreground"
             />
           </div>
           <div className="relative">
@@ -137,7 +137,7 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
               placeholder="발매일 (YYYY.MM.DD)"
               value={releaseDate}
               onChange={(e) => setReleaseDate(e.target.value)}
-              className="pl-10 h-11 bg-surface"
+              className="pl-10 h-11 bg-input border-border text-white placeholder:text-muted-foreground"
             />
           </div>
         </div>

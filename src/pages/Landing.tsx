@@ -6,7 +6,7 @@ const Landing = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen bg-[hsl(0,0%,4%)] text-white relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
       {/* Grain texture overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-50 opacity-[0.03]"
@@ -97,7 +97,7 @@ const Landing = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 2.0, duration: 0.8 }}
-            className="mt-10 md:mt-16 text-base md:text-lg text-white/30 font-light max-w-md leading-relaxed"
+            className="mt-10 md:mt-16 text-base md:text-lg text-muted-foreground font-light max-w-md leading-relaxed"
           >
             Entertainment content, automated end-to-end.
           </motion.p>
@@ -128,12 +128,12 @@ const Landing = () => {
           transition={{ delay: 2.8, duration: 0.6 }}
           className="absolute bottom-8 left-8 md:left-16 right-8 md:right-16 flex items-end justify-between"
         >
-          <div className="flex gap-12 text-[10px] md:text-xs tracking-[0.2em] text-white/20 font-medium">
+          <div className="flex gap-12 text-[10px] md:text-xs tracking-[0.2em] text-muted-foreground font-medium">
             <span>SHORTS</span>
             <span>ANALYTICS</span>
             <span>DOCS</span>
           </div>
-          <div className="text-[10px] md:text-xs tracking-[0.2em] text-white/20 font-medium">
+          <div className="text-[10px] md:text-xs tracking-[0.2em] text-muted-foreground font-medium">
             © 2026
           </div>
         </motion.div>

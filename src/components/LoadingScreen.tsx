@@ -51,7 +51,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
         <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-accent mb-1">
           <Brain className="w-6 h-6 text-accent-foreground" />
         </div>
-        <h2 className="text-xl font-bold">AI 분석 중...</h2>
+        <h2 className="text-xl font-bold text-white">AI 분석 중...</h2>
         <p className="text-sm text-muted-foreground">영상을 분석하여 최적의 쇼츠를 제작하고 있습니다</p>
       </div>
 
@@ -59,7 +59,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
       <div className="space-y-2">
         <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span>전체 진행률</span>
-          <span className="font-semibold text-foreground">{Math.round(progress)}%</span>
+          <span className="font-semibold text-white">{Math.round(progress)}%</span>
         </div>
         <Progress value={progress} className="h-2.5 rounded-full" />
       </div>
@@ -70,13 +70,12 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
           const Icon = step.icon;
           const isDone = currentStep > i;
           const isActive = currentStep === i;
-          const isPending = currentStep < i;
 
           return (
             <div
               key={i}
               className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 ${
-                isActive ? "bg-accent border border-primary/20" : isDone ? "bg-surface" : "bg-surface opacity-50"
+                isActive ? "bg-accent border border-primary/20" : isDone ? "bg-card" : "bg-card opacity-50"
               }`}
             >
               <div
@@ -100,7 +99,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
                     <span className="text-[10px] font-medium text-success bg-success/10 px-1.5 py-0.5 rounded">완료</span>
                   )}
                 </div>
-                <p className={`text-sm font-medium mt-0.5 ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                <p className={`text-sm font-medium mt-0.5 ${isActive ? "text-white" : "text-muted-foreground"}`}>
                   {isDone ? step.doneLabel : step.label}
                 </p>
               </div>

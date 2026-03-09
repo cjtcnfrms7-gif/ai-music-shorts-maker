@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Play, Edit3, Check, ArrowRight, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 
 interface Clip {
   id: number;
@@ -31,33 +30,21 @@ const ResultScreen = ({ onNext }: ResultScreenProps) => {
   const [editingSub, setEditingSub] = useState(false);
   const [tempValue, setTempValue] = useState("");
 
-  const startEditMain = () => {
-    setTempValue(mainWording);
-    setEditingMain(true);
-  };
-  const startEditSub = () => {
-    setTempValue(subWording);
-    setEditingSub(true);
-  };
-  const saveMain = () => {
-    setMainWording(tempValue);
-    setEditingMain(false);
-  };
-  const saveSub = () => {
-    setSubWording(tempValue);
-    setEditingSub(false);
-  };
+  const startEditMain = () => { setTempValue(mainWording); setEditingMain(true); };
+  const startEditSub = () => { setTempValue(subWording); setEditingSub(true); };
+  const saveMain = () => { setMainWording(tempValue); setEditingMain(false); };
+  const saveSub = () => { setSubWording(tempValue); setEditingSub(false); };
 
   return (
     <div className="animate-step-in space-y-5 px-4 py-6">
       {/* Header */}
       <div className="text-center space-y-1">
-        <h2 className="text-xl font-bold">분석 결과</h2>
+        <h2 className="text-xl font-bold text-white">분석 결과</h2>
         <p className="text-sm text-muted-foreground">AI가 생성한 워딩과 하이라이트 클립을 확인하세요</p>
       </div>
 
       {/* Wordings Section */}
-      <div className="bg-surface rounded-xl p-5 space-y-4">
+      <div className="bg-card rounded-xl p-5 space-y-4 border border-border">
         <h3 className="text-sm font-semibold text-muted-foreground">생성된 워딩</h3>
 
         {/* Main Wording */}
@@ -72,12 +59,12 @@ const ResultScreen = ({ onNext }: ResultScreenProps) => {
           </div>
           {editingMain ? (
             <div className="flex gap-2 items-center">
-              <Input value={tempValue} onChange={(e) => setTempValue(e.target.value)} className="h-10 text-lg font-bold" autoFocus />
+              <Input value={tempValue} onChange={(e) => setTempValue(e.target.value)} className="h-10 text-lg font-bold bg-input border-border text-white" autoFocus />
               <Button size="sm" onClick={saveMain} className="h-10 w-10 p-0 flex-shrink-0"><Check className="w-4 h-4" /></Button>
               <Button size="sm" variant="ghost" onClick={() => setEditingMain(false)} className="h-10 w-10 p-0 flex-shrink-0"><X className="w-4 h-4" /></Button>
             </div>
           ) : (
-            <p className="text-2xl font-bold leading-tight">{mainWording}</p>
+            <p className="text-2xl font-bold leading-tight text-white">{mainWording}</p>
           )}
         </div>
 
@@ -93,7 +80,7 @@ const ResultScreen = ({ onNext }: ResultScreenProps) => {
           </div>
           {editingSub ? (
             <div className="flex gap-2 items-center">
-              <Input value={tempValue} onChange={(e) => setTempValue(e.target.value)} className="h-9 text-sm" autoFocus />
+              <Input value={tempValue} onChange={(e) => setTempValue(e.target.value)} className="h-9 text-sm bg-input border-border text-white" autoFocus />
               <Button size="sm" onClick={saveSub} className="h-9 w-9 p-0 flex-shrink-0"><Check className="w-4 h-4" /></Button>
               <Button size="sm" variant="ghost" onClick={() => setEditingSub(false)} className="h-9 w-9 p-0 flex-shrink-0"><X className="w-4 h-4" /></Button>
             </div>
@@ -105,17 +92,17 @@ const ResultScreen = ({ onNext }: ResultScreenProps) => {
 
       {/* Clips */}
       <div className="space-y-2.5">
-        <h3 className="text-sm font-semibold">하이라이트 클립 ({clips.length}개)</h3>
+        <h3 className="text-sm font-semibold text-foreground">하이라이트 클립 ({clips.length}개)</h3>
         {clips.map((clip, i) => (
-          <div key={clip.id} className="bg-surface rounded-xl p-4 space-y-2.5">
+          <div key={clip.id} className="bg-card rounded-xl p-4 space-y-2.5 border border-border">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
                   <span className="text-xs font-bold text-primary-foreground">{i + 1}</span>
                 </div>
-                <span className="text-sm font-semibold">클립 {i + 1}</span>
+                <span className="text-sm font-semibold text-white">클립 {i + 1}</span>
               </div>
-              <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-background px-3 py-1.5 rounded-full font-medium">
+              <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-muted px-3 py-1.5 rounded-full font-medium">
                 <Play className="w-3 h-3" />
                 {clip.startTime} ~ {clip.endTime}
               </div>
@@ -127,7 +114,7 @@ const ResultScreen = ({ onNext }: ResultScreenProps) => {
             </div>
 
             {/* AI Reason */}
-            <div className="bg-accent/50 rounded-lg px-3 py-2.5">
+            <div className="bg-accent rounded-lg px-3 py-2.5">
               <p className="text-[11px] font-semibold text-accent-foreground/70 mb-0.5">AI 선택 이유</p>
               <p className="text-xs text-foreground/80 leading-relaxed">{clip.reason}</p>
             </div>

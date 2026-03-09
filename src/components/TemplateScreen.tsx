@@ -92,11 +92,11 @@ const TemplateScreen = ({ clipCount, onDownload }: TemplateScreenProps) => {
     <div className="animate-step-in space-y-5 px-4 py-6">
       {/* Header */}
       <div className="text-center space-y-1">
-        <h2 className="text-xl font-bold">어떤 템플릿으로 만들까요?</h2>
+        <h2 className="text-xl font-bold text-white">어떤 템플릿으로 만들까요?</h2>
         <p className="text-sm text-muted-foreground">쇼츠에 적용할 레이아웃을 선택하세요</p>
       </div>
 
-      {/* Template list - vertical */}
+      {/* Template list */}
       <div className="space-y-3">
         {templates.map((tmpl) => {
           const isSelected = selected === tmpl.id;
@@ -107,7 +107,7 @@ const TemplateScreen = ({ clipCount, onDownload }: TemplateScreenProps) => {
               className={`w-full flex items-center gap-4 p-4 rounded-xl text-left transition-all border-2 ${
                 isSelected
                   ? "border-primary bg-accent"
-                  : "border-transparent bg-surface hover:border-border"
+                  : "border-transparent bg-card hover:border-border"
               }`}
             >
               {/* Preview */}
@@ -118,7 +118,7 @@ const TemplateScreen = ({ clipCount, onDownload }: TemplateScreenProps) => {
               {/* Info */}
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <p className="text-sm font-bold">{tmpl.name}</p>
+                  <p className="text-sm font-bold text-white">{tmpl.name}</p>
                   {isSelected && (
                     <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
                       <Check className="w-3 h-3 text-primary-foreground" />
