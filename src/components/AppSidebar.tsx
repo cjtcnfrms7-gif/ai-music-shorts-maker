@@ -24,16 +24,16 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
+    <Sidebar collapsible="icon" className="border-r border-border bg-sidebar">
       <SidebarContent>
         {/* Logo */}
-        <div className="px-4 py-6 border-b border-sidebar-border">
+        <div className="px-4 py-6 border-b border-border">
           {collapsed ? (
-            <span className="text-lg font-black text-sidebar-primary font-display">E</span>
+            <span className="text-lg font-black text-white font-display">E</span>
           ) : (
             <div>
-              <h1 className="text-lg font-black tracking-[-0.02em] text-sidebar-primary font-display">ENTIUS</h1>
-              <p className="text-[10px] text-sidebar-foreground/50 mt-0.5 font-body-kr">콘텐츠의 흐름을 바꾸다</p>
+              <h1 className="text-lg font-black tracking-[-0.02em] text-white font-display">ENTIUS</h1>
+              <p className="text-[10px] text-muted-foreground mt-0.5 font-body-kr">콘텐츠의 흐름을 바꾸다</p>
             </div>
           )}
         </div>
