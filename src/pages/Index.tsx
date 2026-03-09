@@ -1,4 +1,5 @@
 import { useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -45,7 +46,16 @@ const Index = () => {
 
   return (
     <SidebarProvider>
-      <div className="min-h-screen flex w-full bg-background">
+      <div className="min-h-screen flex w-full bg-background relative">
+        {/* Purple slide-out overlay on mount */}
+        <motion.div
+          className="fixed inset-0 z-[100] pointer-events-none"
+          style={{ backgroundColor: "hsl(263 84% 58%)" }}
+          initial={{ x: "0%" }}
+          animate={{ x: "100%" }}
+          transition={{ duration: 0.3, delay: 0.05, ease: [0.76, 0, 0.24, 1] }}
+        />
+
         <AppSidebar />
 
         <div className="flex-1 flex flex-col min-w-0">

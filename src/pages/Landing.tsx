@@ -1,12 +1,33 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
 const Landing = () => {
   const navigate = useNavigate();
+  const [transitioning, setTransitioning] = useState(false);
+
+  const handleGetStarted = () => {
+    setTransitioning(true);
+    // Slide in takes 0.3s, then navigate, then slide out
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 350);
+  };
 
   return (
     <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
+      {/* Purple slide transition overlay */}
+      {transitioning && (
+        <motion.div
+          className="fixed inset-0 z-[100]"
+          style={{ backgroundColor: "hsl(263 84% 58%)" }}
+          initial={{ x: "-100%" }}
+          animate={{ x: "0%" }}
+          transition={{ duration: 0.3, ease: [0.76, 0, 0.24, 1] }}
+        />
+      )}
+
       {/* Grain texture overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-50 opacity-[0.03]"
@@ -110,7 +131,7 @@ const Landing = () => {
             className="mt-12 md:mt-16"
           >
             <button
-              onClick={() => navigate("/dashboard")}
+              onClick={handleGetStarted}
               className="group inline-flex items-center gap-4 text-sm tracking-[0.15em] font-medium text-white/60 hover:text-white transition-colors duration-300"
             >
               <span className="border border-white/20 group-hover:border-primary group-hover:bg-primary/10 px-8 py-4 rounded-full transition-all duration-300">
