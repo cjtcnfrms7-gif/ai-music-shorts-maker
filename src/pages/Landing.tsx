@@ -5,29 +5,19 @@ import { ArrowRight } from "lucide-react";
 
 const Landing = () => {
   const navigate = useNavigate();
-  const [transitioning, setTransitioning] = useState(false);
+  const [exiting, setExiting] = useState(false);
 
   const handleGetStarted = () => {
-    setTransitioning(true);
-    // Slide in takes 0.3s, then navigate, then slide out
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 350);
+    setExiting(true);
+    setTimeout(() => navigate("/dashboard"), 800);
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative overflow-hidden">
-      {/* Purple slide transition overlay */}
-      {transitioning && (
-        <motion.div
-          className="fixed inset-0 z-[100]"
-          style={{ backgroundColor: "hsl(263 84% 58%)" }}
-          initial={{ x: "-100%" }}
-          animate={{ x: "0%" }}
-          transition={{ duration: 0.3, ease: [0.76, 0, 0.24, 1] }}
-        />
-      )}
-
+    <motion.div
+      className="min-h-screen bg-background text-foreground relative overflow-hidden"
+      animate={exiting ? { scale: 0.95, opacity: 0, filter: "blur(8px)" } : { scale: 1, opacity: 1, filter: "blur(0px)" }}
+      transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+    >
       {/* Grain texture overlay */}
       <div
         className="fixed inset-0 pointer-events-none z-50 opacity-[0.03]"
@@ -159,7 +149,7 @@ const Landing = () => {
           </div>
         </motion.div>
       </section>
-    </div>
+    </motion.div>
   );
 };
 
