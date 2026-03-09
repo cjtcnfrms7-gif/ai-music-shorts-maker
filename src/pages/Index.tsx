@@ -1,5 +1,7 @@
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
 import LoadingScreen from "@/components/LoadingScreen";
 import ResultScreen from "@/components/ResultScreen";
@@ -42,48 +44,63 @@ const Index = () => {
   const currentIdx = STEP_ORDER.indexOf(step);
 
   return (
-    <div className="min-h-screen bg-background">
-      {/* Top progress bar */}
-      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-md mx-auto px-4 py-3">
-          <div className="flex items-center gap-1">
-            {STEP_ORDER.map((s, i) => (
-              <div key={s} className="flex items-center flex-1">
-                <div className="flex flex-col items-center flex-1">
-                  <div
-                    className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                      i <= currentIdx
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground"
-                    }`}
-                  >
-                    {i + 1}
+    <SidebarProvider>
+      <div className="min-h-screen flex w-full bg-background">
+        <AppSidebar />
+
+        <div className="flex-1 flex flex-col min-w-0">
+          {/* Header */}
+          <header className="h-14 flex items-center border-b border-border px-4 bg-background sticky top-0 z-10">
+            <SidebarTrigger className="mr-4" />
+
+            {/* Step progress */}
+            <div className="flex items-center gap-1">
+              {STEP_ORDER.map((s, i) => (
+                <div key={s} className="flex items-center">
+                  <div className="flex items-center gap-1.5">
+                    <div
+                      className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                        i <= currentIdx
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-muted-foreground"
+                      }`}
+                    >
+                      {i + 1}
+                    </div>
+                    <span
+                      className={`text-xs font-medium hidden sm:inline ${
+                        i <= currentIdx ? "text-foreground" : "text-muted-foreground"
+                      }`}
+                    >
+                      {STEP_LABELS[s]}
+                    </span>
                   </div>
-                  <span className={`text-[10px] mt-1 font-medium ${
-                    i <= currentIdx ? "text-foreground" : "text-muted-foreground"
-                  }`}>
-                    {STEP_LABELS[s]}
-                  </span>
+                  {i < STEP_ORDER.length - 1 && (
+                    <div
+                      className={`w-8 h-0.5 mx-2 rounded transition-colors ${
+                        i < currentIdx ? "bg-primary" : "bg-border"
+                      }`}
+                    />
+                  )}
                 </div>
-                {i < STEP_ORDER.length - 1 && (
-                  <div className={`h-0.5 flex-1 rounded transition-colors ${
-                    i < currentIdx ? "bg-primary" : "bg-border"
-                  }`} />
-                )}
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          </header>
+
+          {/* Main content */}
+          <main className="flex-1 overflow-y-auto">
+            <div className="max-w-2xl mx-auto pb-8">
+              {step === "upload" && <UploadScreen onSubmit={handleUploadSubmit} />}
+              {step === "loading" && <LoadingScreen onComplete={handleLoadingComplete} />}
+              {step === "result" && <ResultScreen onNext={handleResultNext} />}
+              {step === "template" && (
+                <TemplateScreen clipCount={clipCount} onDownload={handleDownload} />
+              )}
+            </div>
+          </main>
         </div>
       </div>
-
-      {/* Content */}
-      <div className="max-w-md mx-auto pb-8">
-        {step === "upload" && <UploadScreen onSubmit={handleUploadSubmit} />}
-        {step === "loading" && <LoadingScreen onComplete={handleLoadingComplete} />}
-        {step === "result" && <ResultScreen onNext={handleResultNext} />}
-        {step === "template" && <TemplateScreen clipCount={clipCount} onDownload={handleDownload} />}
-      </div>
-    </div>
+    </SidebarProvider>
   );
 };
 
