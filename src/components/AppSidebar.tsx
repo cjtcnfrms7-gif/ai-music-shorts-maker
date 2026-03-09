@@ -1,4 +1,4 @@
-import { Film, BarChart3, FileText, Settings, Lock } from "lucide-react";
+import { Film, BarChart3, FileText, Settings } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -24,16 +24,16 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-border">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border bg-sidebar">
       <SidebarContent>
         {/* Logo */}
-        <div className="px-4 py-5 border-b border-border">
+        <div className="px-4 py-6 border-b border-sidebar-border">
           {collapsed ? (
-            <span className="text-lg font-black text-primary">E</span>
+            <span className="text-lg font-black text-sidebar-primary font-display">E</span>
           ) : (
             <div>
-              <h1 className="text-xl font-black tracking-tight text-primary">ENTIUS</h1>
-              <p className="text-[10px] text-muted-foreground mt-0.5">콘텐츠의 흐름을 바꾸다</p>
+              <h1 className="text-lg font-black tracking-[-0.02em] text-sidebar-primary font-display">ENTIUS</h1>
+              <p className="text-[10px] text-sidebar-foreground/50 mt-0.5 font-body-kr">콘텐츠의 흐름을 바꾸다</p>
             </div>
           )}
         </div>
@@ -45,12 +45,12 @@ export function AppSidebar() {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild={!item.disabled} disabled={item.disabled}>
                     {item.disabled ? (
-                      <div className="flex items-center gap-2 opacity-50 cursor-not-allowed px-2 py-2">
+                      <div className="flex items-center gap-2.5 opacity-40 cursor-not-allowed px-2 py-2">
                         <item.icon className="h-4 w-4 flex-shrink-0" />
                         {!collapsed && (
                           <div className="flex items-center gap-2 flex-1">
-                            <span className="text-sm">{item.title}</span>
-                            <Badge variant="secondary" className="text-[9px] px-1.5 py-0 h-4 font-medium">
+                            <span className="text-sm font-body-kr">{item.title}</span>
+                            <Badge variant="secondary" className="text-[9px] px-1.5 py-0 h-4 font-medium font-body-kr">
                               준비중
                             </Badge>
                           </div>
@@ -60,11 +60,11 @@ export function AppSidebar() {
                       <NavLink
                         to={item.url}
                         end
-                        className="hover:bg-accent/50"
-                        activeClassName="bg-accent text-primary font-semibold"
+                        className="hover:bg-sidebar-accent/50"
+                        activeClassName="bg-sidebar-accent text-sidebar-primary font-semibold"
                       >
                         <item.icon className="h-4 w-4 flex-shrink-0" />
-                        {!collapsed && <span className="text-sm">{item.title}</span>}
+                        {!collapsed && <span className="text-sm font-body-kr">{item.title}</span>}
                       </NavLink>
                     )}
                   </SidebarMenuButton>
