@@ -13,10 +13,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 
 const menuItems = [
-  { title: "쇼츠 제작", url: "/", icon: Film, disabled: false },
-  { title: "데이터 분석", url: "/analytics", icon: BarChart3, disabled: true },
-  { title: "문서 자동화", url: "/docs", icon: FileText, disabled: true },
-  { title: "설정", url: "/settings", icon: Settings, disabled: false },
+  { title: "쇼츠 제작", url: "/dashboard", icon: Film, disabled: false },
+  { title: "데이터 분석", url: "/dashboard/analytics", icon: BarChart3, disabled: true },
+  { title: "문서 자동화", url: "/dashboard/docs", icon: FileText, disabled: true },
+  { title: "설정", url: "/dashboard/settings", icon: Settings, disabled: false },
 ];
 
 export function AppSidebar() {
