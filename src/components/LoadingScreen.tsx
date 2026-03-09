@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { Download, Brain, Type, Film, Check } from "lucide-react";
+import { Download, Brain, Type, Film, Check, Loader2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface LoadingScreenProps {
   onComplete: () => void;
 }
 
 const steps = [
-  { icon: Download, label: "영상 다운로드 중...", duration: 2000 },
-  { icon: Brain, label: "AI 하이라이트 분석 중...", duration: 3000 },
-  { icon: Type, label: "워딩 생성 중...", duration: 2000 },
-  { icon: Film, label: "쇼츠 제작 중...", duration: 2500 },
+  { icon: Download, label: "영상 다운로드 중...", doneLabel: "영상 다운로드 완료", duration: 2000 },
+  { icon: Brain, label: "AI 하이라이트 분석 중...", doneLabel: "AI 하이라이트 분석 완료", duration: 3000 },
+  { icon: Type, label: "워딩 생성 중...", doneLabel: "워딩 생성 완료", duration: 2000 },
+  { icon: Film, label: "쇼츠 제작 중...", doneLabel: "쇼츠 제작 완료", duration: 2500 },
 ];
 
 const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
@@ -31,12 +32,12 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
           setCurrentStep(i);
           break;
         }
-        if (i === steps.length - 1) setCurrentStep(steps.length);
+        if (i === steps.length - 1 && elapsed >= acc) setCurrentStep(steps.length);
       }
 
       if (elapsed >= totalDuration) {
         clearInterval(interval);
-        setTimeout(onComplete, 500);
+        setTimeout(onComplete, 600);
       }
     }, 50);
 
@@ -44,54 +45,68 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   }, [onComplete]);
 
   return (
-    <div className="animate-step-in flex flex-col items-center justify-center min-h-[60vh] px-6 py-12">
-      {/* Progress circle */}
-      <div className="relative w-28 h-28 mb-8">
-        <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="hsl(var(--border))" strokeWidth="6" />
-          <circle
-            cx="50" cy="50" r="44" fill="none"
-            stroke="hsl(var(--primary))"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeDasharray={`${2 * Math.PI * 44}`}
-            strokeDashoffset={`${2 * Math.PI * 44 * (1 - progress / 100)}`}
-            className="transition-all duration-100"
-          />
-        </svg>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-xl font-bold">{Math.round(progress)}%</span>
+    <div className="animate-step-in px-4 py-8 space-y-8">
+      {/* Title */}
+      <div className="text-center space-y-2">
+        <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-accent mb-1">
+          <Brain className="w-6 h-6 text-accent-foreground" />
         </div>
+        <h2 className="text-xl font-bold">AI 분석 중...</h2>
+        <p className="text-sm text-muted-foreground">영상을 분석하여 최적의 쇼츠를 제작하고 있습니다</p>
+      </div>
+
+      {/* Overall progress bar */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <span>전체 진행률</span>
+          <span className="font-semibold text-foreground">{Math.round(progress)}%</span>
+        </div>
+        <Progress value={progress} className="h-2.5 rounded-full" />
       </div>
 
       {/* Steps */}
-      <div className="w-full max-w-xs space-y-3">
+      <div className="space-y-3">
         {steps.map((step, i) => {
           const Icon = step.icon;
           const isDone = currentStep > i;
           const isActive = currentStep === i;
+          const isPending = currentStep < i;
 
           return (
             <div
               key={i}
-              className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ${
-                isActive ? "bg-accent" : isDone ? "bg-surface" : "opacity-40"
+              className={`flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300 ${
+                isActive ? "bg-accent border border-primary/20" : isDone ? "bg-surface" : "bg-surface opacity-50"
               }`}
             >
-              <div className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
-                isDone ? "bg-success" : isActive ? "bg-primary" : "bg-muted"
-              }`}>
+              <div
+                className={`w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0 transition-colors ${
+                  isDone ? "bg-success" : isActive ? "bg-primary" : "bg-muted"
+                }`}
+              >
                 {isDone ? (
                   <Check className="w-4 h-4 text-success-foreground" />
+                ) : isActive ? (
+                  <Loader2 className="w-4 h-4 text-primary-foreground animate-spin" />
                 ) : (
-                  <Icon className={`w-4 h-4 ${isActive ? "text-primary-foreground" : "text-muted-foreground"}`} />
+                  <Icon className="w-4 h-4 text-muted-foreground" />
                 )}
               </div>
-              <span className={`text-sm font-medium ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
-                {isDone ? step.label.replace("중...", "완료") : step.label}
-              </span>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-semibold text-muted-foreground">{i + 1}단계</span>
+                  {isDone && (
+                    <span className="text-[10px] font-medium text-success bg-success/10 px-1.5 py-0.5 rounded">완료</span>
+                  )}
+                </div>
+                <p className={`text-sm font-medium mt-0.5 ${isActive ? "text-foreground" : "text-muted-foreground"}`}>
+                  {isDone ? step.doneLabel : step.label}
+                </p>
+              </div>
+
               {isActive && (
-                <div className="ml-auto flex gap-1">
+                <div className="flex gap-1">
                   {[0, 1, 2].map((d) => (
                     <div
                       key={d}
