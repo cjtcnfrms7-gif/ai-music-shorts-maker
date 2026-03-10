@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = "";
 
 interface Clip {
   id: number;
