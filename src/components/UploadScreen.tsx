@@ -70,15 +70,14 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
   const handleSubmit = async () => {
     setProcessing(true);
     try {
-      const res = await fetch(`${API_BASE}/process-local`, {
+      const params = new URLSearchParams({
+        file_path: filePath,
+        song_title: title,
+        artist,
+        release_date: releaseDate,
+      });
+      const res = await fetch(`${API_BASE}/process-local?${params.toString()}`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          file_path: filePath,
-          title,
-          artist,
-          release_date: releaseDate,
-        }),
       });
       if (!res.ok) throw new Error("처리 실패");
       const data = await res.json();
