@@ -4,42 +4,37 @@ import { toast } from "sonner";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
-import LoadingScreen from "@/components/LoadingScreen";
 import ResultScreen from "@/components/ResultScreen";
-import TemplateScreen from "@/components/TemplateScreen";
 
-type Step = "upload" | "loading" | "result" | "template";
+type Step = "upload" | "result";
+
+interface Clip {
+  id: number;
+  start_time: string;
+  end_time: string;
+  reason: string;
+  file_path?: string;
+}
 
 const STEP_LABELS: Record<Step, string> = {
   upload: "업로드",
-  loading: "분석",
   result: "결과",
-  template: "템플릿",
 };
 
-const STEP_ORDER: Step[] = ["upload", "loading", "result", "template"];
+const STEP_ORDER: Step[] = ["upload", "result"];
 
 const Index = () => {
   const [step, setStep] = useState<Step>("upload");
-  const [clipCount, setClipCount] = useState(5);
+  const [clips, setClips] = useState<Clip[]>([]);
 
-  const handleUploadSubmit = useCallback(() => {
-    setStep("loading");
-  }, []);
-
-  const handleLoadingComplete = useCallback(() => {
+  const handleUploadSubmit = useCallback((data: { clips: Clip[] }) => {
+    setClips(data.clips);
     setStep("result");
   }, []);
 
-  const handleResultNext = useCallback((clips: any[]) => {
-    setClipCount(clips.length);
-    setStep("template");
-  }, []);
-
-  const handleDownload = useCallback(() => {
-    toast.success("다운로드가 시작되었습니다!", {
-      description: "쇼츠 영상이 곧 준비됩니다.",
-    });
+  const handleReset = useCallback(() => {
+    setClips([]);
+    setStep("upload");
   }, []);
 
   const currentIdx = STEP_ORDER.indexOf(step);
@@ -97,11 +92,7 @@ const Index = () => {
           <main className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto pb-8">
               {step === "upload" && <UploadScreen onSubmit={handleUploadSubmit} />}
-              {step === "loading" && <LoadingScreen onComplete={handleLoadingComplete} />}
-              {step === "result" && <ResultScreen onNext={handleResultNext} />}
-              {step === "template" && (
-                <TemplateScreen clipCount={clipCount} onDownload={handleDownload} />
-              )}
+              {step === "result" && <ResultScreen clips={clips} onReset={handleReset} />}
             </div>
           </main>
         </div>
