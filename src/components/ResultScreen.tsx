@@ -3,6 +3,7 @@ import { Play, RotateCcw, Loader2, Pencil, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { apiEndpoints } from "@/config/api";
 
 interface Clip {
   id: number;
@@ -34,7 +35,7 @@ const ResultScreen = ({ clips, onReset, filePath, onGenerateWithWording }: Resul
   useEffect(() => {
     if (!filePath) return;
     setWordingsLoading(true);
-    fetch(`http://localhost:8000/generate-wordings?file_path=${encodeURIComponent(filePath)}`, { method: "POST" })
+    fetch(apiEndpoints.generateWordings(filePath), { method: "POST" })
       .then((res) => {
         if (!res.ok) throw new Error("워딩 생성 실패");
         return res.json();

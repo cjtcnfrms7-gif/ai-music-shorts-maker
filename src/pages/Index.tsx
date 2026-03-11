@@ -7,6 +7,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
 import TemplateScreen from "@/components/TemplateScreen";
 import ResultScreen from "@/components/ResultScreen";
+import { apiEndpoints } from "@/config/api";
 
 type Step = "upload" | "template" | "loading" | "result";
 
@@ -47,7 +48,7 @@ const Index = () => {
     setStep("template");
     try {
       const res = await fetch(
-        `http://localhost:8000/preview-templates?file_path=${encodeURIComponent(data.filePath)}&song_title=${encodeURIComponent(data.title)}&artist=${encodeURIComponent(data.artist)}`,
+        apiEndpoints.previewTemplates({ filePath: data.filePath, title: data.title, artist: data.artist }),
         { method: "POST" }
       );
       if (!res.ok) throw new Error("미리보기 생성 실패");
@@ -64,7 +65,7 @@ const Index = () => {
     try {
       const { filePath, title, artist, releaseDate } = uploadData;
       const res = await fetch(
-        `http://localhost:8000/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&template_index=${templateIndex}&skip_whisper=true`,
+        apiEndpoints.processLocal({ filePath, title, artist, releaseDate, templateIndex }),
         { method: "POST" }
       );
       if (!res.ok) throw new Error("처리 실패");
@@ -159,7 +160,7 @@ const Index = () => {
                     setStep("loading");
                     const { filePath, title, artist, releaseDate } = uploadData;
                     fetch(
-                      `http://localhost:8000/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&main_text=${encodeURIComponent(mainText)}&sub_text=${encodeURIComponent(subText)}&skip_whisper=true`,
+                      apiEndpoints.processLocal({ filePath, title, artist, releaseDate, mainText, subText }),
                       { method: "POST" }
                     )
                       .then((res) => {
