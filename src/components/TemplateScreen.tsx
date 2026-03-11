@@ -26,7 +26,7 @@ const TemplateScreen = ({ onSelect, previewImages }: TemplateScreenProps) => {
         <p className="text-sm text-muted-foreground">쇼츠에 적용할 레이아웃을 선택하세요</p>
       </div>
 
-      <div className="grid grid-cols-3 gap-3 sm:grid-cols-5">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
         {templates.map((tmpl) => {
           const isSelected = selected === tmpl.id;
           const imgSrc = previewImages[tmpl.id];
