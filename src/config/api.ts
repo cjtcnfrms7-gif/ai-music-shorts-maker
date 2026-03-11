@@ -15,6 +15,8 @@ export const apiEndpoints = {
     templateIndex?: number;
     mainText?: string;
     subText?: string;
+    fontColor?: string;
+    bgColor?: string;
   }) => {
     let url = `${API_BASE_URL}/process-local?file_path=${encodeURIComponent(params.filePath)}&song_title=${encodeURIComponent(params.title)}&artist=${encodeURIComponent(params.artist)}&release_date=${encodeURIComponent(params.releaseDate)}&skip_whisper=true`;
     if (params.templateIndex !== undefined) {
@@ -23,6 +25,12 @@ export const apiEndpoints = {
     if (params.mainText !== undefined) {
       url += `&main_text=${encodeURIComponent(params.mainText)}`;
       url += `&sub_text=${encodeURIComponent(params.subText || "")}`;
+    }
+    if (params.fontColor) {
+      url += `&font_color=${encodeURIComponent(params.fontColor)}`;
+    }
+    if (params.bgColor) {
+      url += `&bg_color=${encodeURIComponent(params.bgColor)}`;
     }
     return url;
   },

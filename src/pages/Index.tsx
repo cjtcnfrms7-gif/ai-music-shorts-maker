@@ -42,7 +42,8 @@ const Index = () => {
   const [clips, setClips] = useState<Clip[]>([]);
   const [uploadData, setUploadData] = useState<UploadData | null>(null);
   const [resultFilePath, setResultFilePath] = useState<string | undefined>();
-
+  const [editMainText, setEditMainText] = useState("");
+  const [editSubText, setEditSubText] = useState("");
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const handleUploadReady = useCallback(async (data: UploadData) => {
