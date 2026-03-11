@@ -117,7 +117,7 @@ const EditScreen = ({
               </div>
             ) : (
               <video
-                key={currentVideoPath}
+                key={videoKey}
                 src={videoUrl}
                 controls
                 autoPlay
