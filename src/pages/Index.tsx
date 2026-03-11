@@ -142,7 +142,7 @@ const Index = () => {
           <main className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto pb-8">
               {step === "upload" && <UploadScreen onReady={handleUploadReady} />}
-              {step === "template" && <TemplateScreen onSelect={handleTemplateSelect} />}
+              {step === "template" && <TemplateScreen onSelect={handleTemplateSelect} previewImages={previewImages} />}
               {step === "loading" && (
                 <div className="flex flex-col items-center justify-center py-32 space-y-4 animate-step-in">
                   <Loader2 className="w-10 h-10 text-primary animate-spin" />
