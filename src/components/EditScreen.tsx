@@ -38,6 +38,7 @@ const EditScreen = ({
   const [subTextColor, setSubTextColor] = useState("#ffffff");
   const [bgColor, setBgColor] = useState("#000000");
   const [currentVideoPath, setCurrentVideoPath] = useState(videoPath);
+  const [videoKey, setVideoKey] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
 
   const videoUrl = `${API_BASE_URL}${currentVideoPath}`;
