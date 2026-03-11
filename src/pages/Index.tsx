@@ -184,7 +184,7 @@ const Index = () => {
                         const firstClipPath = newClips[0]?.file_path || data.file_path || data.filePath || filePath;
                         setResultFilePath(firstClipPath);
                         setClips(newClips);
-                        setStep("result");
+                        setStep("edit");
                       })
                       .catch((err) => {
                         toast.error(err.message || "처리 중 오류가 발생했습니다");
