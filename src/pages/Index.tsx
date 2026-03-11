@@ -7,9 +7,10 @@ import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
 import TemplateScreen from "@/components/TemplateScreen";
 import ResultScreen from "@/components/ResultScreen";
+import EditScreen from "@/components/EditScreen";
 import { apiEndpoints } from "@/config/api";
 
-type Step = "upload" | "template" | "loading" | "result";
+type Step = "upload" | "template" | "loading" | "result" | "edit";
 
 interface Clip {
   id: number;
@@ -31,9 +32,10 @@ const STEP_LABELS: Record<Step, string> = {
   template: "템플릿",
   loading: "처리 중",
   result: "결과",
+  edit: "편집",
 };
 
-const STEP_ORDER: Step[] = ["upload", "template", "loading", "result"];
+const STEP_ORDER: Step[] = ["upload", "template", "loading", "result", "edit"];
 
 const Index = () => {
   const [step, setStep] = useState<Step>("upload");
@@ -182,13 +184,19 @@ const Index = () => {
                         const firstClipPath = newClips[0]?.file_path || data.file_path || data.filePath || filePath;
                         setResultFilePath(firstClipPath);
                         setClips(newClips);
-                        setStep("result");
+                        setStep("edit");
                       })
                       .catch((err) => {
                         toast.error(err.message || "처리 중 오류가 발생했습니다");
                         setStep("result");
                       });
                   }}
+                />
+              )}
+              {step === "edit" && resultFilePath && (
+                <EditScreen
+                  videoPath={resultFilePath}
+                  onBack={() => setStep("result")}
                 />
               )}
             </div>
