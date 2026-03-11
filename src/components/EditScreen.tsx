@@ -115,21 +115,21 @@ const EditScreen = ({
       <div className="flex flex-col lg:flex-row gap-6">
         {/* Video Preview */}
         <div className="flex-1 flex flex-col items-center gap-4">
-          <div className="w-full max-w-sm aspect-[9/16] rounded-lg overflow-hidden border border-border bg-muted">
-            {isRegenerating ? (
-              <div className="w-full h-full flex flex-col items-center justify-center gap-3">
+          <div className="w-full max-w-sm rounded-lg overflow-hidden border border-border bg-muted relative">
+            {isRegenerating && (
+              <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-3 bg-background/80">
                 <Loader2 className="w-8 h-8 text-primary animate-spin" />
                 <p className="text-sm text-muted-foreground">영상 재생성 중...</p>
               </div>
-            ) : (
-              <video
-                key={videoKey}
-                src={videoUrl}
-                controls
-                autoPlay
-                className="w-full h-full object-contain"
-              />
             )}
+            <video
+              key={videoKey}
+              src={videoUrl}
+              controls
+              autoPlay
+              playsInline
+              style={{ width: "100%", height: "auto", display: "block", minHeight: "300px" }}
+            />
           </div>
           <Button onClick={handleDownload} disabled={isRegenerating} className="gap-2 w-full max-w-sm">
             <Download className="w-4 h-4" />
