@@ -39,9 +39,23 @@ const Index = () => {
   const [clips, setClips] = useState<Clip[]>([]);
   const [uploadData, setUploadData] = useState<UploadData | null>(null);
 
-  const handleUploadReady = useCallback((data: UploadData) => {
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+
+  const handleUploadReady = useCallback(async (data: UploadData) => {
     setUploadData(data);
+    setPreviewImages([]);
     setStep("template");
+    try {
+      const res = await fetch(
+        `/preview-templates?file_path=${encodeURIComponent(data.filePath)}&song_title=${encodeURIComponent(data.title)}&artist=${encodeURIComponent(data.artist)}`,
+        { method: "POST" }
+      );
+      if (!res.ok) throw new Error("미리보기 생성 실패");
+      const json = await res.json();
+      setPreviewImages(json.previews || []);
+    } catch (err: any) {
+      toast.error(err.message || "미리보기를 불러올 수 없습니다");
+    }
   }, []);
 
   const handleTemplateSelect = useCallback(async (templateIndex: number) => {
