@@ -34,9 +34,11 @@ const EditScreen = ({
 }: EditScreenProps) => {
   const [mainText, setMainText] = useState(initialMainText);
   const [subText, setSubText] = useState(initialSubText);
-  const [mainTextColor, setMainTextColor] = useState("#ffffff");
-  const [subTextColor, setSubTextColor] = useState("#ffffff");
-  const [bgColor, setBgColor] = useState("#000000");
+  const [songTitle, setSongTitle] = useState(uploadData.title);
+  const [artist, setArtist] = useState(uploadData.artist);
+  const [mainTextColor, setMainTextColor] = useState("#000000");
+  const [subTextColor, setSubTextColor] = useState("#000000");
+  const [bgColor, setBgColor] = useState("#ffffff");
   const [currentVideoPath, setCurrentVideoPath] = useState(videoPath);
   const [videoKey, setVideoKey] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -66,8 +68,8 @@ const EditScreen = ({
       const res = await fetch(
         apiEndpoints.processLocal({
           filePath: uploadData.filePath,
-          title: uploadData.title,
-          artist: uploadData.artist,
+          title: songTitle,
+          artist,
           releaseDate: uploadData.releaseDate,
           templateIndex: 0,
           mainText,
@@ -133,27 +135,26 @@ const EditScreen = ({
 
         {/* Edit Panel */}
         <div className="flex-1 space-y-5 rounded-lg border border-border bg-card p-5 overflow-y-auto max-h-[80vh]">
-          {/* Text Editing */}
-          <h3 className="text-sm font-semibold text-foreground">텍스트 편집</h3>
-
+          {/* Song Info */}
+          <h3 className="text-sm font-semibold text-foreground">곡 정보</h3>
           <div className="space-y-2">
-            <Label htmlFor="mainText" className="text-xs text-muted-foreground">메인 텍스트</Label>
-            <Input
-              id="mainText"
-              value={mainText}
-              onChange={(e) => setMainText(e.target.value)}
-              placeholder="메인 텍스트 입력"
-            />
+            <Label htmlFor="songTitle" className="text-xs text-muted-foreground">곡제목</Label>
+            <Input id="songTitle" value={songTitle} onChange={(e) => setSongTitle(e.target.value)} placeholder="곡제목 입력" />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="artist" className="text-xs text-muted-foreground">아티스트</Label>
+            <Input id="artist" value={artist} onChange={(e) => setArtist(e.target.value)} placeholder="아티스트 입력" />
           </div>
 
+          {/* Text Editing */}
+          <h3 className="text-sm font-semibold text-foreground">텍스트 편집</h3>
+          <div className="space-y-2">
+            <Label htmlFor="mainText" className="text-xs text-muted-foreground">메인 텍스트</Label>
+            <Input id="mainText" value={mainText} onChange={(e) => setMainText(e.target.value)} placeholder="메인 텍스트 입력" />
+          </div>
           <div className="space-y-2">
             <Label htmlFor="subText" className="text-xs text-muted-foreground">서브 텍스트</Label>
-            <Input
-              id="subText"
-              value={subText}
-              onChange={(e) => setSubText(e.target.value)}
-              placeholder="서브 텍스트 입력"
-            />
+            <Input id="subText" value={subText} onChange={(e) => setSubText(e.target.value)} placeholder="서브 텍스트 입력" />
           </div>
 
           {/* Color Pickers */}
@@ -165,16 +166,8 @@ const EditScreen = ({
           </div>
 
           {/* Regenerate Video */}
-          <Button
-            onClick={handleRegenerate}
-            disabled={isRegenerating}
-            className="gap-2 w-full"
-          >
-            {isRegenerating ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <RefreshCw className="w-4 h-4" />
-            )}
+          <Button onClick={handleRegenerate} disabled={isRegenerating} className="gap-2 w-full">
+            {isRegenerating ? <Loader2 className="w-4 h-4 animate-spin" /> : <RefreshCw className="w-4 h-4" />}
             영상 재생성
           </Button>
 

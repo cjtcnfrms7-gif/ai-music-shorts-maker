@@ -1,17 +1,9 @@
 import { useState } from "react";
 import { Sparkles, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { apiEndpoints } from "@/config/api";
-
-const STYLES = [
-  { label: "감성적", value: "emotional" },
-  { label: "충격적", value: "shocking" },
-  { label: "유머러스", value: "humorous" },
-  { label: "공감형", value: "empathy" },
-];
 
 interface Wording {
   main: string;
@@ -24,15 +16,14 @@ interface AIWordingPanelProps {
 }
 
 const AIWordingPanel = ({ filePath, onSelect }: AIWordingPanelProps) => {
-  const [keyword, setKeyword] = useState("");
-  const [style, setStyle] = useState("emotional");
+  const [prompt, setPrompt] = useState("");
   const [wordings, setWordings] = useState<Wording[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleGenerate = async () => {
     setIsLoading(true);
     try {
-      const url = `${apiEndpoints.generateWordings(filePath)}${keyword ? `&keyword=${encodeURIComponent(keyword)}` : ""}${style ? `&style=${encodeURIComponent(style)}` : ""}`;
+      const url = `${apiEndpoints.generateWordings(filePath)}${prompt ? `&prompt=${encodeURIComponent(prompt)}` : ""}`;
       const res = await fetch(url, { method: "POST" });
       if (!res.ok) throw new Error("워딩 생성 실패");
       const data = await res.json();
@@ -54,33 +45,12 @@ const AIWordingPanel = ({ filePath, onSelect }: AIWordingPanelProps) => {
         <h4 className="text-sm font-semibold text-foreground">AI 워딩 재생성</h4>
       </div>
 
-      <div className="space-y-2">
-        <Label className="text-xs text-muted-foreground">키워드</Label>
-        <Input
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="예: 이별, 그리움, 설렘"
-        />
-      </div>
-
-      <div className="space-y-2">
-        <Label className="text-xs text-muted-foreground">스타일</Label>
-        <div className="flex flex-wrap gap-2">
-          {STYLES.map((s) => (
-            <button
-              key={s.value}
-              onClick={() => setStyle(s.value)}
-              className={`px-3 py-1.5 text-xs rounded-full border transition-colors ${
-                style === s.value
-                  ? "bg-primary text-primary-foreground border-primary"
-                  : "bg-background text-muted-foreground border-border hover:border-primary/50"
-              }`}
-            >
-              {s.label}
-            </button>
-          ))}
-        </div>
-      </div>
+      <Textarea
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="예: 임팩트 강하고 직설적으로 다시 써줘"
+        className="min-h-[60px] resize-none"
+      />
 
       <Button
         onClick={handleGenerate}
