@@ -38,6 +38,7 @@ const EditScreen = ({
   const [subTextColor, setSubTextColor] = useState("#ffffff");
   const [bgColor, setBgColor] = useState("#000000");
   const [currentVideoPath, setCurrentVideoPath] = useState(videoPath);
+  const [videoKey, setVideoKey] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
 
   const videoUrl = `${API_BASE_URL}${currentVideoPath}`;
@@ -81,6 +82,7 @@ const EditScreen = ({
       const clips = data.clips || data.results || [];
       const newPath = clips[0]?.file_path || data.file_path || data.filePath || currentVideoPath;
       setCurrentVideoPath(newPath);
+      setVideoKey(prev => prev + 1);
       onVideoUpdated(newPath);
       toast.success("영상이 재생성되었습니다");
     } catch (err: any) {
@@ -115,7 +117,7 @@ const EditScreen = ({
               </div>
             ) : (
               <video
-                key={currentVideoPath}
+                key={videoKey}
                 src={videoUrl}
                 controls
                 autoPlay
