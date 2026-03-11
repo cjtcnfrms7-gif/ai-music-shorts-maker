@@ -14,8 +14,8 @@ interface Clip {
 }
 
 interface Wording {
-  main_text: string;
-  sub_text: string;
+  main: string;
+  sub: string;
 }
 
 interface ResultScreenProps {
