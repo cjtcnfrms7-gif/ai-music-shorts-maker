@@ -5,20 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { API_BASE_URL, apiEndpoints } from "@/config/api";
-
-const FONT_COLORS = [
-  { label: "흰색", value: "white", tw: "bg-white border border-border" },
-  { label: "검정", value: "black", tw: "bg-black" },
-  { label: "노랑", value: "yellow", tw: "bg-yellow-400" },
-  { label: "빨강", value: "red", tw: "bg-red-500" },
-];
-
-const BG_COLORS = [
-  { label: "흰색", value: "white", tw: "bg-white border border-border" },
-  { label: "검정", value: "black", tw: "bg-black" },
-  { label: "회색", value: "gray", tw: "bg-gray-400" },
-  { label: "베이지", value: "beige", tw: "bg-amber-100" },
-];
+import ColorPickerField from "@/components/edit/ColorPickerField";
+import AIWordingPanel from "@/components/edit/AIWordingPanel";
 
 interface EditScreenProps {
   videoPath: string;
@@ -46,8 +34,9 @@ const EditScreen = ({
 }: EditScreenProps) => {
   const [mainText, setMainText] = useState(initialMainText);
   const [subText, setSubText] = useState(initialSubText);
-  const [fontColor, setFontColor] = useState("white");
-  const [bgColor, setBgColor] = useState("black");
+  const [mainTextColor, setMainTextColor] = useState("#ffffff");
+  const [subTextColor, setSubTextColor] = useState("#ffffff");
+  const [bgColor, setBgColor] = useState("#000000");
   const [currentVideoPath, setCurrentVideoPath] = useState(videoPath);
   const [isRegenerating, setIsRegenerating] = useState(false);
 
@@ -82,7 +71,7 @@ const EditScreen = ({
           templateIndex: 0,
           mainText,
           subText,
-          fontColor,
+          fontColor: mainTextColor,
           bgColor,
         }),
         { method: "POST" }
@@ -141,7 +130,8 @@ const EditScreen = ({
         </div>
 
         {/* Edit Panel */}
-        <div className="flex-1 space-y-5 rounded-lg border border-border bg-card p-5">
+        <div className="flex-1 space-y-5 rounded-lg border border-border bg-card p-5 overflow-y-auto max-h-[80vh]">
+          {/* Text Editing */}
           <h3 className="text-sm font-semibold text-foreground">텍스트 편집</h3>
 
           <div className="space-y-2">
@@ -164,42 +154,15 @@ const EditScreen = ({
             />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">폰트 색상</Label>
-            <div className="flex gap-2">
-              {FONT_COLORS.map((c) => (
-                <button
-                  key={c.value}
-                  onClick={() => setFontColor(c.value)}
-                  className={`w-8 h-8 rounded-full ${c.tw} transition-all ${
-                    fontColor === c.value
-                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
-                      : "hover:scale-110"
-                  }`}
-                  title={c.label}
-                />
-              ))}
-            </div>
+          {/* Color Pickers */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-semibold text-foreground">색상 설정</h3>
+            <ColorPickerField label="메인 텍스트" value={mainTextColor} onChange={setMainTextColor} />
+            <ColorPickerField label="서브 텍스트" value={subTextColor} onChange={setSubTextColor} />
+            <ColorPickerField label="배경색" value={bgColor} onChange={setBgColor} />
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-xs text-muted-foreground">배경색</Label>
-            <div className="flex gap-2">
-              {BG_COLORS.map((c) => (
-                <button
-                  key={c.value}
-                  onClick={() => setBgColor(c.value)}
-                  className={`w-8 h-8 rounded-full ${c.tw} transition-all ${
-                    bgColor === c.value
-                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background"
-                      : "hover:scale-110"
-                  }`}
-                  title={c.label}
-                />
-              ))}
-            </div>
-          </div>
-
+          {/* Regenerate Video */}
           <Button
             onClick={handleRegenerate}
             disabled={isRegenerating}
@@ -212,6 +175,16 @@ const EditScreen = ({
             )}
             영상 재생성
           </Button>
+
+          {/* AI Wording Regeneration */}
+          <AIWordingPanel
+            filePath={uploadData.filePath}
+            onSelect={(main, sub) => {
+              setMainText(main);
+              setSubText(sub);
+              toast.success("워딩이 적용되었습니다");
+            }}
+          />
         </div>
       </div>
     </div>
