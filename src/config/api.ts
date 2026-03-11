@@ -16,13 +16,14 @@ export const apiEndpoints = {
     mainText?: string;
     subText?: string;
   }) => {
-    const base = `${API_BASE_URL}/process-local?file_path=${encodeURIComponent(params.filePath)}&song_title=${encodeURIComponent(params.title)}&artist=${encodeURIComponent(params.artist)}&release_date=${encodeURIComponent(params.releaseDate)}&skip_whisper=true`;
+    let url = `${API_BASE_URL}/process-local?file_path=${encodeURIComponent(params.filePath)}&song_title=${encodeURIComponent(params.title)}&artist=${encodeURIComponent(params.artist)}&release_date=${encodeURIComponent(params.releaseDate)}&skip_whisper=true`;
     if (params.templateIndex !== undefined) {
-      return `${base}&template_index=${params.templateIndex}`;
+      url += `&template_index=${params.templateIndex}`;
     }
-    if (params.mainText && params.subText) {
-      return `${base}&main_text=${encodeURIComponent(params.mainText)}&sub_text=${encodeURIComponent(params.subText)}`;
+    if (params.mainText !== undefined) {
+      url += `&main_text=${encodeURIComponent(params.mainText)}`;
+      url += `&sub_text=${encodeURIComponent(params.subText || "")}`;
     }
-    return base;
+    return url;
   },
 };

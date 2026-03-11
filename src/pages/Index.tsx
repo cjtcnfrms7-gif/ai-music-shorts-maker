@@ -163,7 +163,7 @@ const Index = () => {
                     setStep("loading");
                     const { filePath, title, artist, releaseDate } = uploadData;
                     fetch(
-                      apiEndpoints.processLocal({ filePath, title, artist, releaseDate, mainText, subText }),
+                      apiEndpoints.processLocal({ filePath, title, artist, releaseDate, templateIndex: 0, mainText, subText }),
                       { method: "POST" }
                     )
                       .then((res) => {
