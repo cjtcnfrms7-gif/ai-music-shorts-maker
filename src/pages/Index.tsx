@@ -42,7 +42,8 @@ const Index = () => {
   const [clips, setClips] = useState<Clip[]>([]);
   const [uploadData, setUploadData] = useState<UploadData | null>(null);
   const [resultFilePath, setResultFilePath] = useState<string | undefined>();
-
+  const [editMainText, setEditMainText] = useState("");
+  const [editSubText, setEditSubText] = useState("");
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   const handleUploadReady = useCallback(async (data: UploadData) => {
@@ -183,6 +184,8 @@ const Index = () => {
                         toast.success(`${newClips.length}개 클립 생성 완료`);
                         const firstClipPath = newClips[0]?.file_path || data.file_path || data.filePath || filePath;
                         setResultFilePath(firstClipPath);
+                        setEditMainText(mainText);
+                        setEditSubText(subText);
                         setClips(newClips);
                         setStep("edit");
                       })
@@ -193,10 +196,15 @@ const Index = () => {
                   }}
                 />
               )}
-              {step === "edit" && resultFilePath && (
+              {step === "edit" && resultFilePath && uploadData && (
                 <EditScreen
                   videoPath={resultFilePath}
+                  initialMainText={editMainText}
+                  initialSubText={editSubText}
+                  uploadData={uploadData}
                   onBack={() => setStep("result")}
+                  onBackToWordings={() => setStep("result")}
+                  onVideoUpdated={(newPath) => setResultFilePath(newPath)}
                 />
               )}
             </div>
