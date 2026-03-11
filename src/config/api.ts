@@ -34,6 +34,12 @@ export const apiEndpoints = {
     if (params.bgColor) {
       url += `&bg_color=${encodeURIComponent(params.bgColor)}`;
     }
+    if (params.songColor) {
+      url += `&song_color=${encodeURIComponent(params.songColor)}`;
+    }
+    if (params.artistColor) {
+      url += `&artist_color=${encodeURIComponent(params.artistColor)}`;
+    }
     return url;
   },
 };

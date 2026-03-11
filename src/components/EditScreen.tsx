@@ -167,6 +167,8 @@ const EditScreen = ({
             <ColorPickerField label="메인 텍스트" value={mainTextColor} onChange={setMainTextColor} />
             <ColorPickerField label="서브 텍스트" value={subTextColor} onChange={setSubTextColor} />
             <ColorPickerField label="배경색" value={bgColor} onChange={setBgColor} />
+            <ColorPickerField label="곡제목" value={songTitleColor} onChange={setSongTitleColor} />
+            <ColorPickerField label="아티스트" value={artistColor} onChange={setArtistColor} />
           </div>
 
           {/* Regenerate Video */}
