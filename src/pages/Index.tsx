@@ -7,9 +7,10 @@ import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
 import TemplateScreen from "@/components/TemplateScreen";
 import ResultScreen from "@/components/ResultScreen";
+import EditScreen from "@/components/EditScreen";
 import { apiEndpoints } from "@/config/api";
 
-type Step = "upload" | "template" | "loading" | "result";
+type Step = "upload" | "template" | "loading" | "result" | "edit";
 
 interface Clip {
   id: number;
