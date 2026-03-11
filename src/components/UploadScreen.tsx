@@ -16,6 +16,7 @@ interface Clip {
 
 interface UploadScreenProps {
   onSubmit: (data: { clips: Clip[] }) => void;
+  onProcessing?: () => void;
 }
 
 const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
