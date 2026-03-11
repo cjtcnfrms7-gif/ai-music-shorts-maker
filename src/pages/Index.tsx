@@ -193,6 +193,12 @@ const Index = () => {
                   }}
                 />
               )}
+              {step === "edit" && resultFilePath && (
+                <EditScreen
+                  videoPath={resultFilePath}
+                  onBack={() => setStep("result")}
+                />
+              )}
             </div>
           </main>
         </div>
