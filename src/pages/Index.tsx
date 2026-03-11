@@ -1,12 +1,13 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
 import ResultScreen from "@/components/ResultScreen";
 
-type Step = "upload" | "result";
+type Step = "upload" | "loading" | "result";
 
 interface Clip {
   id: number;
@@ -18,10 +19,11 @@ interface Clip {
 
 const STEP_LABELS: Record<Step, string> = {
   upload: "업로드",
+  loading: "처리 중",
   result: "결과",
 };
 
-const STEP_ORDER: Step[] = ["upload", "result"];
+const STEP_ORDER: Step[] = ["upload", "loading", "result"];
 
 const Index = () => {
   const [step, setStep] = useState<Step>("upload");
@@ -30,6 +32,10 @@ const Index = () => {
   const handleUploadSubmit = useCallback((data: { clips: Clip[] }) => {
     setClips(data.clips);
     setStep("result");
+  }, []);
+
+  const handleProcessing = useCallback(() => {
+    setStep("loading");
   }, []);
 
   const handleReset = useCallback(() => {
@@ -91,7 +97,13 @@ const Index = () => {
           {/* Main content */}
           <main className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto pb-8">
-              {step === "upload" && <UploadScreen onSubmit={handleUploadSubmit} />}
+              {step === "upload" && <UploadScreen onSubmit={handleUploadSubmit} onProcessing={handleProcessing} />}
+              {step === "loading" && (
+                <div className="flex flex-col items-center justify-center py-32 space-y-4 animate-step-in">
+                  <Loader2 className="w-10 h-10 text-primary animate-spin" />
+                  <p className="text-sm font-medium text-muted-foreground">AI가 클립을 생성하고 있습니다...</p>
+                </div>
+              )}
               {step === "result" && <ResultScreen clips={clips} onReset={handleReset} />}
             </div>
           </main>

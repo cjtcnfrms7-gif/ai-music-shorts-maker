@@ -16,9 +16,10 @@ interface Clip {
 
 interface UploadScreenProps {
   onSubmit: (data: { clips: Clip[] }) => void;
+  onProcessing?: () => void;
 }
 
-const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
+const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
   const [filePath, setFilePath] = useState("");
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
@@ -69,16 +70,12 @@ const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
 
   const handleSubmit = async () => {
     setProcessing(true);
+    onProcessing?.();
     try {
-      const params = new URLSearchParams({
-        file_path: filePath,
-        song_title: title,
-        artist,
-        release_date: releaseDate,
-      });
-      const res = await fetch(`${API_BASE}/process-local?${params.toString()}`, {
-        method: "POST",
-      });
+      const res = await fetch(
+        `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}`,
+        { method: "POST" }
+      );
       if (!res.ok) throw new Error("처리 실패");
       const data = await res.json();
       const clips: Clip[] = (data.clips || data.results || []).map((c: any, i: number) => ({
