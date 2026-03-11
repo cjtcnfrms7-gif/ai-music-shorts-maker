@@ -196,10 +196,15 @@ const Index = () => {
                   }}
                 />
               )}
-              {step === "edit" && resultFilePath && (
+              {step === "edit" && resultFilePath && uploadData && (
                 <EditScreen
                   videoPath={resultFilePath}
+                  initialMainText={editMainText}
+                  initialSubText={editSubText}
+                  uploadData={uploadData}
                   onBack={() => setStep("result")}
+                  onBackToWordings={() => setStep("result")}
+                  onVideoUpdated={(newPath) => setResultFilePath(newPath)}
                 />
               )}
             </div>
