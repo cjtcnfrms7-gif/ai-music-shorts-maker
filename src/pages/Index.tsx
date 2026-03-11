@@ -32,6 +32,7 @@ const STEP_LABELS: Record<Step, string> = {
   template: "템플릿",
   loading: "처리 중",
   result: "결과",
+  edit: "편집",
 };
 
 const STEP_ORDER: Step[] = ["upload", "template", "loading", "result"];
