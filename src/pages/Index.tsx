@@ -34,6 +34,10 @@ const Index = () => {
     setStep("result");
   }, []);
 
+  const handleProcessing = useCallback(() => {
+    setStep("loading");
+  }, []);
+
   const handleReset = useCallback(() => {
     setClips([]);
     setStep("upload");
