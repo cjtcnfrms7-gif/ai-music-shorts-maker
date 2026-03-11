@@ -19,7 +19,7 @@ interface UploadScreenProps {
   onProcessing?: () => void;
 }
 
-const UploadScreen = ({ onSubmit }: UploadScreenProps) => {
+const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
   const [filePath, setFilePath] = useState("");
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
