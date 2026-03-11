@@ -174,10 +174,18 @@ const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWith
               </div>
             </div>
 
-            {/* Thumbnail placeholder */}
-            <div className="aspect-video bg-gradient-to-br from-primary/10 via-accent to-primary/5 rounded-lg flex items-center justify-center">
-              <Play className="w-10 h-10 text-primary/30" />
-            </div>
+            {/* Video or placeholder */}
+            {clip.file_path ? (
+              <video
+                src={`http://localhost:8000${clip.file_path}`}
+                controls
+                className="aspect-video w-full rounded-lg bg-black"
+              />
+            ) : (
+              <div className="aspect-video bg-gradient-to-br from-primary/10 via-accent to-primary/5 rounded-lg flex items-center justify-center">
+                <Play className="w-10 h-10 text-primary/30" />
+              </div>
+            )}
 
             {/* AI Reason */}
             {clip.reason && (
