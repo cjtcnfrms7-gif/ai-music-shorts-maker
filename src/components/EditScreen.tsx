@@ -78,6 +78,8 @@ const EditScreen = ({
           subText,
           fontColor: mainTextColor,
           bgColor,
+          songColor: songTitleColor,
+          artistColor,
         }),
         { method: "POST" }
       );
