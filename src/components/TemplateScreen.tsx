@@ -42,6 +42,8 @@ const TemplateScreen = ({ onSelect }: TemplateScreenProps) => {
                   src={tmpl.image}
                   alt={tmpl.name}
                   className="w-full h-full object-cover"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', background: '#333' }}
+                  onError={(e) => console.error('Image load failed:', tmpl.image, e)}
                 />
               </div>
               <div className="p-2 bg-card text-center">
