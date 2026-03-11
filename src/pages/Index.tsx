@@ -19,10 +19,11 @@ interface Clip {
 
 const STEP_LABELS: Record<Step, string> = {
   upload: "업로드",
+  loading: "처리 중",
   result: "결과",
 };
 
-const STEP_ORDER: Step[] = ["upload", "result"];
+const STEP_ORDER: Step[] = ["upload", "loading", "result"];
 
 const Index = () => {
   const [step, setStep] = useState<Step>("upload");
