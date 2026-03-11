@@ -70,6 +70,7 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
 
   const handleSubmit = async () => {
     setProcessing(true);
+    onProcessing?.();
     try {
       const res = await fetch(
         `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}`,
