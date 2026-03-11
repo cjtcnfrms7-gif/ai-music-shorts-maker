@@ -149,7 +149,42 @@ const Index = () => {
                   <p className="text-sm font-medium text-muted-foreground">AI가 클립을 생성하고 있습니다...</p>
                 </div>
               )}
-              {step === "result" && <ResultScreen clips={clips} onReset={handleReset} />}
+              {step === "result" && (
+                <ResultScreen
+                  clips={clips}
+                  onReset={handleReset}
+                  filePath={uploadData?.filePath}
+                  onGenerateWithWording={(mainText, subText) => {
+                    if (!uploadData) return;
+                    setStep("loading");
+                    const { filePath, title, artist, releaseDate } = uploadData;
+                    fetch(
+                      `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&main_text=${encodeURIComponent(mainText)}&sub_text=${encodeURIComponent(subText)}`,
+                      { method: "POST" }
+                    )
+                      .then((res) => {
+                        if (!res.ok) throw new Error("처리 실패");
+                        return res.json();
+                      })
+                      .then((data) => {
+                        const newClips: Clip[] = (data.clips || data.results || []).map((c: any, i: number) => ({
+                          id: c.id || i + 1,
+                          start_time: c.start_time || c.startTime || "0:00",
+                          end_time: c.end_time || c.endTime || "0:30",
+                          reason: c.reason || c.description || "",
+                          file_path: c.file_path || c.filePath || "",
+                        }));
+                        toast.success(`${newClips.length}개 클립 생성 완료`);
+                        setClips(newClips);
+                        setStep("result");
+                      })
+                      .catch((err) => {
+                        toast.error(err.message || "처리 중 오류가 발생했습니다");
+                        setStep("result");
+                      });
+                  }}
+                />
+              )}
             </div>
           </main>
         </div>
