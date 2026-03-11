@@ -46,8 +46,8 @@ const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWith
         setWordings(list);
         if (list.length > 0) {
           setSelectedIdx(0);
-          setEditMain(list[0].main_text);
-          setEditSub(list[0].sub_text);
+          setEditMain(list[0].main);
+          setEditSub(list[0].sub);
         }
       })
       .catch((err) => toast.error(err.message || "워딩을 불러올 수 없습니다"))
