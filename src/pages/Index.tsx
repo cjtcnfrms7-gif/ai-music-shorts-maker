@@ -35,7 +35,7 @@ const STEP_LABELS: Record<Step, string> = {
   edit: "편집",
 };
 
-const STEP_ORDER: Step[] = ["upload", "template", "loading", "result"];
+const STEP_ORDER: Step[] = ["upload", "template", "loading", "result", "edit"];
 
 const Index = () => {
   const [step, setStep] = useState<Step>("upload");
