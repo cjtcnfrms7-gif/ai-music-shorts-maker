@@ -34,7 +34,7 @@ const ResultScreen = ({ clips, onReset, filePath, onGenerateWithWording }: Resul
   useEffect(() => {
     if (!filePath) return;
     setWordingsLoading(true);
-    fetch(`/generate-wordings?file_path=${encodeURIComponent(filePath)}`, { method: "POST" })
+    fetch(`http://localhost:8000/generate-wordings?file_path=${encodeURIComponent(filePath)}`, { method: "POST" })
       .then((res) => {
         if (!res.ok) throw new Error("워딩 생성 실패");
         return res.json();

@@ -47,7 +47,7 @@ const Index = () => {
     setStep("template");
     try {
       const res = await fetch(
-        `/preview-templates?file_path=${encodeURIComponent(data.filePath)}&song_title=${encodeURIComponent(data.title)}&artist=${encodeURIComponent(data.artist)}`,
+        `http://localhost:8000/preview-templates?file_path=${encodeURIComponent(data.filePath)}&song_title=${encodeURIComponent(data.title)}&artist=${encodeURIComponent(data.artist)}`,
         { method: "POST" }
       );
       if (!res.ok) throw new Error("미리보기 생성 실패");
