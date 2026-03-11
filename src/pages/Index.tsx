@@ -1,12 +1,13 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
 import ResultScreen from "@/components/ResultScreen";
 
-type Step = "upload" | "result";
+type Step = "upload" | "loading" | "result";
 
 interface Clip {
   id: number;
