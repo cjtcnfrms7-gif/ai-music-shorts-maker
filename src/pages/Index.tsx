@@ -64,7 +64,7 @@ const Index = () => {
     try {
       const { filePath, title, artist, releaseDate } = uploadData;
       const res = await fetch(
-        `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&template_index=${templateIndex}`,
+        `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&template_index=${templateIndex}&skip_whisper=true`,
         { method: "POST" }
       );
       if (!res.ok) throw new Error("처리 실패");
