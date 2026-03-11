@@ -1,25 +1,14 @@
 import { useState, useCallback } from "react";
-import { Upload, Music, Calendar, User, Play, Loader2, FileVideo } from "lucide-react";
+import { Upload, Music, Calendar, User, ArrowRight, Loader2, FileVideo } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 
-const API_BASE = "";
-
-interface Clip {
-  id: number;
-  start_time: string;
-  end_time: string;
-  reason: string;
-  file_path?: string;
-}
-
 interface UploadScreenProps {
-  onSubmit: (data: { clips: Clip[] }) => void;
-  onProcessing?: () => void;
+  onReady: (data: { filePath: string; title: string; artist: string; releaseDate: string }) => void;
 }
 
-const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
+const UploadScreen = ({ onReady }: UploadScreenProps) => {
   const [filePath, setFilePath] = useState("");
   const [title, setTitle] = useState("");
   const [artist, setArtist] = useState("");
@@ -27,14 +16,13 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
   const [isDragging, setIsDragging] = useState(false);
   const [fileName, setFileName] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [processing, setProcessing] = useState(false);
 
   const uploadFile = async (file: File) => {
     setUploading(true);
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch(`${API_BASE}/upload`, { method: "POST", body: formData });
+      const res = await fetch("/upload", { method: "POST", body: formData });
       if (!res.ok) throw new Error("업로드 실패");
       const data = await res.json();
       setFilePath(data.file_path || data.path || "");
@@ -68,38 +56,14 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
     if (file) uploadFile(file);
   };
 
-  const handleSubmit = async () => {
-    setProcessing(true);
-    onProcessing?.();
-    try {
-      const res = await fetch(
-        `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}`,
-        { method: "POST" }
-      );
-      if (!res.ok) throw new Error("처리 실패");
-      const data = await res.json();
-      const clips: Clip[] = (data.clips || data.results || []).map((c: any, i: number) => ({
-        id: c.id || i + 1,
-        start_time: c.start_time || c.startTime || "0:00",
-        end_time: c.end_time || c.endTime || "0:30",
-        reason: c.reason || c.description || "",
-        file_path: c.file_path || c.filePath || "",
-      }));
-      toast.success(`${clips.length}개 클립 생성 완료`);
-      onSubmit({ clips });
-    } catch (err: any) {
-      toast.error(err.message || "처리 중 오류가 발생했습니다");
-    } finally {
-      setProcessing(false);
-    }
+  const handleNext = () => {
+    onReady({ filePath, title, artist, releaseDate });
   };
 
   const isValid = filePath && title && artist;
-  const isLoading = uploading || processing;
 
   return (
     <div className="animate-step-in space-y-6 px-4 py-8">
-      {/* Header */}
       <div className="text-center space-y-2">
         <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-accent mb-2">
           <Music className="w-7 h-7 text-accent-foreground" />
@@ -108,7 +72,6 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
         <p className="text-sm text-muted-foreground">영상을 업로드하면 AI가 자동으로 쇼츠를 생성합니다</p>
       </div>
 
-      {/* File Upload */}
       <div
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -124,7 +87,7 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
           accept="video/*,audio/*"
           onChange={handleFileSelect}
           className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-          disabled={isLoading}
+          disabled={uploading}
         />
         {uploading ? (
           <Loader2 className="w-8 h-8 mx-auto mb-2 text-primary animate-spin" />
@@ -146,7 +109,6 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
         )}
       </div>
 
-      {/* File Path (auto-filled) */}
       {filePath && (
         <div className="space-y-2">
           <label className="text-sm font-medium flex items-center gap-1.5 text-foreground">
@@ -161,7 +123,6 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
         </div>
       )}
 
-      {/* Song Info */}
       <div className="space-y-3">
         <h3 className="text-sm font-semibold text-foreground">곡 정보</h3>
         <div className="space-y-2.5">
@@ -172,7 +133,7 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               className="pl-10 h-11 bg-input border-border text-foreground placeholder:text-muted-foreground"
-              disabled={isLoading}
+              disabled={uploading}
             />
           </div>
           <div className="relative">
@@ -182,7 +143,7 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
               value={artist}
               onChange={(e) => setArtist(e.target.value)}
               className="pl-10 h-11 bg-input border-border text-foreground placeholder:text-muted-foreground"
-              disabled={isLoading}
+              disabled={uploading}
             />
           </div>
           <div className="relative">
@@ -192,29 +153,19 @@ const UploadScreen = ({ onSubmit, onProcessing }: UploadScreenProps) => {
               value={releaseDate}
               onChange={(e) => setReleaseDate(e.target.value)}
               className="pl-10 h-11 bg-input border-border text-foreground placeholder:text-muted-foreground"
-              disabled={isLoading}
+              disabled={uploading}
             />
           </div>
         </div>
       </div>
 
-      {/* Submit */}
       <Button
-        onClick={handleSubmit}
-        disabled={!isValid || isLoading}
+        onClick={handleNext}
+        disabled={!isValid || uploading}
         className="w-full h-12 text-base font-semibold rounded-xl gap-2"
       >
-        {processing ? (
-          <>
-            <Loader2 className="w-4 h-4 animate-spin" />
-            처리 중...
-          </>
-        ) : (
-          <>
-            <Play className="w-4 h-4" />
-            분석 시작
-          </>
-        )}
+        <ArrowRight className="w-4 h-4" />
+        다음: 템플릿 선택
       </Button>
     </div>
   );

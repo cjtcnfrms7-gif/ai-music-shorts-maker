@@ -5,6 +5,7 @@ import { Loader2 } from "lucide-react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
+import TemplateScreen from "@/components/TemplateScreen";
 import ResultScreen from "@/components/ResultScreen";
 
 type Step = "upload" | "template" | "loading" | "result";
@@ -15,6 +16,13 @@ interface Clip {
   end_time: string;
   reason: string;
   file_path?: string;
+}
+
+interface UploadData {
+  filePath: string;
+  title: string;
+  artist: string;
+  releaseDate: string;
 }
 
 const STEP_LABELS: Record<Step, string> = {
@@ -29,18 +37,43 @@ const STEP_ORDER: Step[] = ["upload", "template", "loading", "result"];
 const Index = () => {
   const [step, setStep] = useState<Step>("upload");
   const [clips, setClips] = useState<Clip[]>([]);
+  const [uploadData, setUploadData] = useState<UploadData | null>(null);
 
-  const handleUploadSubmit = useCallback((data: { clips: Clip[] }) => {
-    setClips(data.clips);
-    setStep("result");
+  const handleUploadReady = useCallback((data: UploadData) => {
+    setUploadData(data);
+    setStep("template");
   }, []);
 
-  const handleProcessing = useCallback(() => {
+  const handleTemplateSelect = useCallback(async (templateIndex: number) => {
+    if (!uploadData) return;
     setStep("loading");
-  }, []);
+    try {
+      const { filePath, title, artist, releaseDate } = uploadData;
+      const res = await fetch(
+        `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&template_index=${templateIndex}`,
+        { method: "POST" }
+      );
+      if (!res.ok) throw new Error("처리 실패");
+      const data = await res.json();
+      const clips: Clip[] = (data.clips || data.results || []).map((c: any, i: number) => ({
+        id: c.id || i + 1,
+        start_time: c.start_time || c.startTime || "0:00",
+        end_time: c.end_time || c.endTime || "0:30",
+        reason: c.reason || c.description || "",
+        file_path: c.file_path || c.filePath || "",
+      }));
+      toast.success(`${clips.length}개 클립 생성 완료`);
+      setClips(clips);
+      setStep("result");
+    } catch (err: any) {
+      toast.error(err.message || "처리 중 오류가 발생했습니다");
+      setStep("template");
+    }
+  }, [uploadData]);
 
   const handleReset = useCallback(() => {
     setClips([]);
+    setUploadData(null);
     setStep("upload");
   }, []);
 
@@ -57,11 +90,8 @@ const Index = () => {
         <AppSidebar />
 
         <div className="flex-1 flex flex-col min-w-0">
-          {/* Header */}
           <header className="h-14 flex items-center border-b border-border px-4 bg-background sticky top-0 z-10">
             <SidebarTrigger className="mr-4 text-muted-foreground hover:text-foreground" />
-
-            {/* Step progress */}
             <div className="flex items-center gap-1">
               {STEP_ORDER.map((s, i) => (
                 <div key={s} className="flex items-center">
@@ -95,10 +125,10 @@ const Index = () => {
             </div>
           </header>
 
-          {/* Main content */}
           <main className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto pb-8">
-              {step === "upload" && <UploadScreen onSubmit={handleUploadSubmit} onProcessing={handleProcessing} />}
+              {step === "upload" && <UploadScreen onReady={handleUploadReady} />}
+              {step === "template" && <TemplateScreen onSelect={handleTemplateSelect} />}
               {step === "loading" && (
                 <div className="flex flex-col items-center justify-center py-32 space-y-4 animate-step-in">
                   <Loader2 className="w-10 h-10 text-primary animate-spin" />
