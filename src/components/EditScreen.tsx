@@ -45,7 +45,7 @@ const EditScreen = ({
   const [videoKey, setVideoKey] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
 
-  const videoUrl = `${API_BASE_URL}${currentVideoPath}`;
+  const videoUrl = `${API_BASE_URL}${currentVideoPath}?t=${videoKey}`;
 
   const handleDownload = async () => {
     try {
