@@ -56,8 +56,8 @@ const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWith
 
   const handleSelect = (idx: number) => {
     setSelectedIdx(idx);
-    setEditMain(wordings[idx].main_text);
-    setEditSub(wordings[idx].sub_text);
+    setEditMain(wordings[idx].main);
+    setEditSub(wordings[idx].sub);
   };
 
   const handleGenerate = () => {
