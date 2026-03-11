@@ -14,8 +14,8 @@ interface Clip {
 }
 
 interface Wording {
-  main_text: string;
-  sub_text: string;
+  main: string;
+  sub: string;
 }
 
 interface ResultScreenProps {
@@ -46,8 +46,8 @@ const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWith
         setWordings(list);
         if (list.length > 0) {
           setSelectedIdx(0);
-          setEditMain(list[0].main_text);
-          setEditSub(list[0].sub_text);
+          setEditMain(list[0].main);
+          setEditSub(list[0].sub);
         }
       })
       .catch((err) => toast.error(err.message || "워딩을 불러올 수 없습니다"))
@@ -56,8 +56,8 @@ const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWith
 
   const handleSelect = (idx: number) => {
     setSelectedIdx(idx);
-    setEditMain(wordings[idx].main_text);
-    setEditSub(wordings[idx].sub_text);
+    setEditMain(wordings[idx].main);
+    setEditSub(wordings[idx].sub);
   };
 
   const handleGenerate = () => {
@@ -105,8 +105,8 @@ const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWith
                         : "border-border bg-card hover:border-muted-foreground/30"
                     }`}
                   >
-                    <p className="text-xs font-bold text-foreground truncate">{w.main_text}</p>
-                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">{w.sub_text}</p>
+                    <p className="text-xs font-bold text-foreground truncate">{w.main}</p>
+                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">{w.sub}</p>
                   </button>
                 );
               })}
