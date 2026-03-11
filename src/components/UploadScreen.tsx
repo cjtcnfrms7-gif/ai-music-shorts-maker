@@ -3,6 +3,7 @@ import { Upload, Music, Calendar, User, ArrowRight, Loader2, FileVideo } from "l
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
+import { apiEndpoints } from "@/config/api";
 
 interface UploadScreenProps {
   onReady: (data: { filePath: string; title: string; artist: string; releaseDate: string }) => void;
@@ -22,7 +23,7 @@ const UploadScreen = ({ onReady }: UploadScreenProps) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("http://localhost:8000/upload", { method: "POST", body: formData });
+      const res = await fetch(apiEndpoints.upload, { method: "POST", body: formData });
       if (!res.ok) throw new Error("업로드 실패");
       const data = await res.json();
       setFilePath(data.file_path || data.path || "");
