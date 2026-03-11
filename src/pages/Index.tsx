@@ -39,6 +39,7 @@ const Index = () => {
   const [step, setStep] = useState<Step>("upload");
   const [clips, setClips] = useState<Clip[]>([]);
   const [uploadData, setUploadData] = useState<UploadData | null>(null);
+  const [resultFilePath, setResultFilePath] = useState<string | undefined>();
 
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
