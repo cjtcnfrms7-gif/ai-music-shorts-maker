@@ -22,10 +22,11 @@ interface ResultScreenProps {
   clips: Clip[];
   onReset: () => void;
   filePath?: string;
+  resultFilePath?: string;
   onGenerateWithWording?: (mainText: string, subText: string) => void;
 }
 
-const ResultScreen = ({ clips, onReset, filePath, onGenerateWithWording }: ResultScreenProps) => {
+const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWithWording }: ResultScreenProps) => {
   const [wordings, setWordings] = useState<Wording[]>([]);
   const [wordingsLoading, setWordingsLoading] = useState(false);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(null);
