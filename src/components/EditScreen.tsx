@@ -39,6 +39,8 @@ const EditScreen = ({
   const [mainTextColor, setMainTextColor] = useState("#000000");
   const [subTextColor, setSubTextColor] = useState("#000000");
   const [bgColor, setBgColor] = useState("#ffffff");
+  const [songTitleColor, setSongTitleColor] = useState("#000000");
+  const [artistColor, setArtistColor] = useState("#000000");
   const [currentVideoPath, setCurrentVideoPath] = useState(videoPath);
   const [videoKey, setVideoKey] = useState(0);
   const [isRegenerating, setIsRegenerating] = useState(false);
@@ -76,6 +78,8 @@ const EditScreen = ({
           subText,
           fontColor: mainTextColor,
           bgColor,
+          songColor: songTitleColor,
+          artistColor,
         }),
         { method: "POST" }
       );
@@ -163,6 +167,8 @@ const EditScreen = ({
             <ColorPickerField label="메인 텍스트" value={mainTextColor} onChange={setMainTextColor} />
             <ColorPickerField label="서브 텍스트" value={subTextColor} onChange={setSubTextColor} />
             <ColorPickerField label="배경색" value={bgColor} onChange={setBgColor} />
+            <ColorPickerField label="곡제목" value={songTitleColor} onChange={setSongTitleColor} />
+            <ColorPickerField label="아티스트" value={artistColor} onChange={setArtistColor} />
           </div>
 
           {/* Regenerate Video */}
