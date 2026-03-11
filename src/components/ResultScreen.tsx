@@ -105,8 +105,8 @@ const ResultScreen = ({ clips, onReset, filePath, resultFilePath, onGenerateWith
                         : "border-border bg-card hover:border-muted-foreground/30"
                     }`}
                   >
-                    <p className="text-xs font-bold text-foreground truncate">{w.main_text}</p>
-                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">{w.sub_text}</p>
+                    <p className="text-xs font-bold text-foreground truncate">{w.main}</p>
+                    <p className="text-[11px] text-muted-foreground truncate mt-0.5">{w.sub}</p>
                   </button>
                 );
               })}
