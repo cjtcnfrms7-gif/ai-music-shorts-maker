@@ -47,7 +47,7 @@ const Index = () => {
     setStep("template");
     try {
       const res = await fetch(
-        `/preview-templates?file_path=${encodeURIComponent(data.filePath)}&song_title=${encodeURIComponent(data.title)}&artist=${encodeURIComponent(data.artist)}`,
+        `http://localhost:8000/preview-templates?file_path=${encodeURIComponent(data.filePath)}&song_title=${encodeURIComponent(data.title)}&artist=${encodeURIComponent(data.artist)}`,
         { method: "POST" }
       );
       if (!res.ok) throw new Error("미리보기 생성 실패");
@@ -64,7 +64,7 @@ const Index = () => {
     try {
       const { filePath, title, artist, releaseDate } = uploadData;
       const res = await fetch(
-        `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&template_index=${templateIndex}&skip_whisper=true`,
+        `http://localhost:8000/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&template_index=${templateIndex}&skip_whisper=true`,
         { method: "POST" }
       );
       if (!res.ok) throw new Error("처리 실패");
@@ -159,7 +159,7 @@ const Index = () => {
                     setStep("loading");
                     const { filePath, title, artist, releaseDate } = uploadData;
                     fetch(
-                      `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&main_text=${encodeURIComponent(mainText)}&sub_text=${encodeURIComponent(subText)}&skip_whisper=true`,
+                      `http://localhost:8000/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&main_text=${encodeURIComponent(mainText)}&sub_text=${encodeURIComponent(subText)}&skip_whisper=true`,
                       { method: "POST" }
                     )
                       .then((res) => {

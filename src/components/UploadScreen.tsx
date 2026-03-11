@@ -22,7 +22,7 @@ const UploadScreen = ({ onReady }: UploadScreenProps) => {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/upload", { method: "POST", body: formData });
+      const res = await fetch("http://localhost:8000/upload", { method: "POST", body: formData });
       if (!res.ok) throw new Error("업로드 실패");
       const data = await res.json();
       setFilePath(data.file_path || data.path || "");
