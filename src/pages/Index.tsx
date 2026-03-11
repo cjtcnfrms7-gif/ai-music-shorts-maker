@@ -39,6 +39,7 @@ const Index = () => {
   const [step, setStep] = useState<Step>("upload");
   const [clips, setClips] = useState<Clip[]>([]);
   const [uploadData, setUploadData] = useState<UploadData | null>(null);
+  const [resultFilePath, setResultFilePath] = useState<string | undefined>();
 
   const [previewImages, setPreviewImages] = useState<string[]>([]);
 
@@ -78,6 +79,7 @@ const Index = () => {
         file_path: c.file_path || c.filePath || "",
       }));
       toast.success(`${clips.length}개 클립 생성 완료`);
+      setResultFilePath(data.file_path || data.filePath || filePath);
       setClips(clips);
       setStep("result");
     } catch (err: any) {
@@ -154,7 +156,7 @@ const Index = () => {
                 <ResultScreen
                   clips={clips}
                   onReset={handleReset}
-                  filePath={uploadData?.filePath}
+                  filePath={resultFilePath || uploadData?.filePath}
                   onGenerateWithWording={(mainText, subText) => {
                     if (!uploadData) return;
                     setStep("loading");
@@ -176,6 +178,7 @@ const Index = () => {
                           file_path: c.file_path || c.filePath || "",
                         }));
                         toast.success(`${newClips.length}개 클립 생성 완료`);
+                        setResultFilePath(data.file_path || data.filePath || filePath);
                         setClips(newClips);
                         setStep("result");
                       })
