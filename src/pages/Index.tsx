@@ -39,9 +39,23 @@ const Index = () => {
   const [clips, setClips] = useState<Clip[]>([]);
   const [uploadData, setUploadData] = useState<UploadData | null>(null);
 
-  const handleUploadReady = useCallback((data: UploadData) => {
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
+
+  const handleUploadReady = useCallback(async (data: UploadData) => {
     setUploadData(data);
+    setPreviewImages([]);
     setStep("template");
+    try {
+      const res = await fetch(
+        `/preview-templates?file_path=${encodeURIComponent(data.filePath)}&song_title=${encodeURIComponent(data.title)}&artist=${encodeURIComponent(data.artist)}`,
+        { method: "POST" }
+      );
+      if (!res.ok) throw new Error("미리보기 생성 실패");
+      const json = await res.json();
+      setPreviewImages(json.previews || []);
+    } catch (err: any) {
+      toast.error(err.message || "미리보기를 불러올 수 없습니다");
+    }
   }, []);
 
   const handleTemplateSelect = useCallback(async (templateIndex: number) => {
@@ -128,7 +142,7 @@ const Index = () => {
           <main className="flex-1 overflow-y-auto">
             <div className="max-w-2xl mx-auto pb-8">
               {step === "upload" && <UploadScreen onReady={handleUploadReady} />}
-              {step === "template" && <TemplateScreen onSelect={handleTemplateSelect} />}
+              {step === "template" && <TemplateScreen onSelect={handleTemplateSelect} previewImages={previewImages} />}
               {step === "loading" && (
                 <div className="flex flex-col items-center justify-center py-32 space-y-4 animate-step-in">
                   <Loader2 className="w-10 h-10 text-primary animate-spin" />
