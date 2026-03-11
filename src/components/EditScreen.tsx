@@ -82,6 +82,7 @@ const EditScreen = ({
       const clips = data.clips || data.results || [];
       const newPath = clips[0]?.file_path || data.file_path || data.filePath || currentVideoPath;
       setCurrentVideoPath(newPath);
+      setVideoKey(prev => prev + 1);
       onVideoUpdated(newPath);
       toast.success("영상이 재생성되었습니다");
     } catch (err: any) {
