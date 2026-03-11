@@ -7,7 +7,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import UploadScreen from "@/components/UploadScreen";
 import ResultScreen from "@/components/ResultScreen";
 
-type Step = "upload" | "loading" | "result";
+type Step = "upload" | "template" | "loading" | "result";
 
 interface Clip {
   id: number;
