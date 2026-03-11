@@ -159,7 +159,7 @@ const Index = () => {
                     setStep("loading");
                     const { filePath, title, artist, releaseDate } = uploadData;
                     fetch(
-                      `/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&main_text=${encodeURIComponent(mainText)}&sub_text=${encodeURIComponent(subText)}&skip_whisper=true`,
+                      `http://localhost:8000/process-local?file_path=${encodeURIComponent(filePath)}&song_title=${encodeURIComponent(title)}&artist=${encodeURIComponent(artist)}&release_date=${encodeURIComponent(releaseDate)}&main_text=${encodeURIComponent(mainText)}&sub_text=${encodeURIComponent(subText)}&skip_whisper=true`,
                       { method: "POST" }
                     )
                       .then((res) => {
