@@ -179,7 +179,8 @@ const Index = () => {
                           file_path: c.file_path || c.filePath || "",
                         }));
                         toast.success(`${newClips.length}개 클립 생성 완료`);
-                        setResultFilePath(data.file_path || data.filePath || filePath);
+                        const firstClipPath = newClips[0]?.file_path || data.file_path || data.filePath || filePath;
+                        setResultFilePath(firstClipPath);
                         setClips(newClips);
                         setStep("result");
                       })
