@@ -153,10 +153,11 @@ const Index = () => {
                 </div>
               )}
               {step === "result" && (
-                <ResultScreen
+              <ResultScreen
                   clips={clips}
                   onReset={handleReset}
-                  filePath={resultFilePath || uploadData?.filePath}
+                  filePath={uploadData?.filePath}
+                  resultFilePath={resultFilePath || uploadData?.filePath}
                   onGenerateWithWording={(mainText, subText) => {
                     if (!uploadData) return;
                     setStep("loading");
